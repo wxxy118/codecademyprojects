@@ -1,0 +1,84 @@
+import java.util.Arrays;
+
+  /* 
+  This program will determine the best fare option for someone visiting NYC depending on their intended number of stay days, who plans to use the NYC transit system
+  I wasn't able to do this on my own, but instead tried to laern from other peoples and try to change it around, but it may be pretty similar to the original author's code. I took notes from : 
+  1. codecademy answer provided by annajiali
+  2. codecademydv : https://gist.github.com/codecademydev/0ac8cb384ba62be6c682ddd11eb391c1.js
+  */
+
+public class TransitCalculator {
+  
+  // Customer Ride Information
+  int transitDays;
+  int numberOfRides;
+
+  // Fare Option  
+  String[] rideOptions = {"Pay-per-ride", "7-day Unlimited Rides", "30 day Unlimited Rides"};
+  double[] ridePrice = {2.75, 33.00, 127.00};
+  
+  // Calculating price per ride
+  double numberOfPasses;
+  double totalCost;
+  double pricePerRide;
+
+  public TransitCalculator(int daysRiding, int ridesTotal) {
+    transitDays = daysRiding;
+    numberOfRides = ridesTotal;
+  }
+  
+
+
+  public double unlimited7Price() {
+    numberOfPasses = Math.ceil(transitDays/7.0);
+    totalCost = numberOfPasses * ridePrice[1];
+
+    return totalCost / numberOfRides;
+
+  }
+
+  public double unlimited30Price() {
+    numberOfPasses = Math.ceil(transitDays/30.0);
+    totalCost = numberOfPasses * ridePrice[2];
+
+    return totalCost / numberOfRides;
+
+  }  
+
+
+  public double[] getRidePrices() {
+    double pprPrice = ridePrice[0];
+    double unlimited7Price = unlimited7Price();
+    double unlimited30Price = unlimited30Price();
+      
+    double prices[] = {pprPrice, unlimited7Price, unlimited30Price};
+    return prices;
+      
+}
+
+  public String getBestFare() {
+    double[] ridePrices = getRidePrices();
+    int winningIndex = 0;
+
+    for (int i = 0; i < ridePrices.length; i++) {
+      if (ridePrices[i] < ridePrices[winningIndex]) {
+        winningIndex = i;
+      }
+    }
+    return "You should get the " + rideOptions[winningIndex] + " option at $" + Math.round(ridePrices[winningIndex] * 100.0) / 100.0 + " per ride.";
+
+  }
+
+
+  public static void main(String[] args) {
+    
+        int myRides = 12;
+        int myDays = 5;
+
+        TransitCalculator transitCalc = new TransitCalculator(myRides, myDays);
+        
+        System.out.println(transitCalc.getBestFare());
+
+  }
+  
+}
